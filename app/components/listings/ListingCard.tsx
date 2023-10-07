@@ -2,6 +2,7 @@
 
 import useCountries from "@/app/hooks/useCountries";
 import { Listing, Reservation, User } from "@prisma/client";
+import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useMemo } from "react";
@@ -44,6 +45,13 @@ const ListingCard: React.FC<ListingCardProps> = ({
     return reservation?.totalPrice || data.price;
   }, [reservation, data.price]);
 
+  const reservationDate = useMemo(() => {
+    if (!reservation) return null;
+    const startDate = new Date(reservation.startDate);
+    const endDate = new Date(reservation.endDate);
+    return `${format(startDate, "PP")} - ${format(endDate, "PP")}`;
+  }, [reservation]);
+
   return (
     <div className="col-span-1 cursor-pointer group">
       <div className="flex flex-col gap-2 w-full">
@@ -64,7 +72,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
         <div className="font-semibold text-lg">
           {location?.region}, {location?.label}
         </div>
-        <div className="font-light text-neutral-500">{data.category}</div>
+        <div className="font-light text-neutral-500">
+          {reservationDate || data.category}
+        </div>
         <div className="flex items-center gap-1">
           <div className="font-semibold">$ {price}</div>
           {!reservation && <div className="font-light">night</div>}
