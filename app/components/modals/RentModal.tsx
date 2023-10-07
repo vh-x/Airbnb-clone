@@ -50,7 +50,7 @@ const RentModal = () => {
 
   const Map = useMemo(
     () => dynamic(() => import("../Map"), { ssr: false }),
-    []
+    [selectedLocation]
   );
 
   const setCustomValue = (id: string, value: any) =>
@@ -123,7 +123,9 @@ const RentModal = () => {
         value={selectedLocation}
         onChange={(value) => setCustomValue("location", value)}
       />
-      <Map center={selectedLocation?.latlng} />
+      <div className="h-[35vh]">
+        <Map center={selectedLocation?.latlng} />
+      </div>
     </div>
   );
 

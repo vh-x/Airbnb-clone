@@ -57,13 +57,16 @@ const ListingCard: React.FC<ListingCardProps> = ({
       <div className="flex flex-col gap-2 w-full">
         <div className="aspect-square w-full relative overflow-hidden rounded-xl">
           <Link href={`/listing/${data.id}`}>
-            <Image
-              fill
-              alt="Listing"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              src={data.imageSrc}
-              className="object-cover h-full w-full group-hover:scale-110 transition"
-            />
+            <div className="relative h-full w-full">
+              <Image
+                fill
+                priority
+                alt="Listing"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                src={data.imageSrc}
+                className="object-cover h-full w-full group-hover:scale-110 transition"
+              />
+            </div>
           </Link>
           <div className="absolute top-3 right-3">
             <HeartButton listingId={data.id} currentUser={currentUser} />
@@ -79,14 +82,15 @@ const ListingCard: React.FC<ListingCardProps> = ({
           <div className="font-semibold">$ {price}</div>
           {!reservation && <div className="font-light">night</div>}
         </div>
+        {onAction && actionLabel && (
+          <Button
+            small
+            disabled={disabled}
+            label={actionLabel}
+            onClick={handleCancel}
+          ></Button>
+        )}
       </div>
-      {onAction && actionLabel && (
-        <Button
-          disabled={disabled}
-          label={actionLabel}
-          onClick={handleCancel}
-        ></Button>
-      )}
     </div>
   );
 };
